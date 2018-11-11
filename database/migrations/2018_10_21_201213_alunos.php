@@ -28,6 +28,6 @@ class Alunos extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('alunos');
     }
 }
