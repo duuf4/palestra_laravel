@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Alunos;
 use Illuminate\Http\Request;
+use Validator;
 
 class AlunosController extends Controller
 {
@@ -14,7 +15,9 @@ class AlunosController extends Controller
      */
     public function index()
     {
-        //
+        $alunos = Alunos::all();
+
+        return view('alunos.index', ['alunos' => $alunos]);
     }
 
     /**
@@ -24,7 +27,7 @@ class AlunosController extends Controller
      */
     public function create()
     {
-        //
+        return view('alunos.form');
     }
 
     /**
@@ -35,39 +38,42 @@ class AlunosController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validation = Validator::make($request->all(), [
+            'nome' => 'required|string',
+            'ra' => 'required|unique:alunos',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Alunos  $alunos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Alunos $alunos)
-    {
-        //
+        if ($validation->fails()) {
+            return back()->withErrors($validation);
+        }
+
+        Alunos::create([
+            'nome' => $request->nome,
+            'ra' => $request->ra,
+        ]);
+
+        return redirect('alunos')->with(['success' => 'Aluno adicionado com sucesso.']);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Alunos  $alunos
+     * @param  \App\Alunos  $aluno
      * @return \Illuminate\Http\Response
      */
-    public function edit(Alunos $alunos)
+    public function edit(Alunos $aluno)
     {
-        //
+        return view('aluno.edit', ['aluno' => $aluno]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Alunos  $alunos
+     * @param  \App\Alunos  $aluno
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Alunos $alunos)
+    public function update(Request $request, Alunos $aluno)
     {
         //
     }
@@ -75,11 +81,13 @@ class AlunosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Alunos  $alunos
+     * @param  \App\Alunos  $aluno
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Alunos $alunos)
+    public function destroy(Alunos $aluno)
     {
-        //
+        $aluno->delete();
+
+        return redirect('alunos')->with(['success' => 'Aluno removido com sucesso.']);
     }
 }
