@@ -63,7 +63,7 @@ class AlunosController extends Controller
      */
     public function edit(Alunos $aluno)
     {
-        return view('aluno.edit', ['aluno' => $aluno]);
+        return view('alunos.edit', ['aluno' => $aluno]);
     }
 
     /**
@@ -75,7 +75,12 @@ class AlunosController extends Controller
      */
     public function update(Request $request, Alunos $aluno)
     {
-        //
+        $aluno->nome = $request->nome;
+        $aluno->ra = $request->ra;
+
+        $aluno->save();
+
+        return redirect('alunos')->with(['success' => 'Aluno atualizado com sucesso.']);
     }
 
     /**

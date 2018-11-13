@@ -3,6 +3,7 @@
 @section('title', 'Criar Alunos')
 
 @section('content')
+  <h1>Adicionar Alunos</h1>
   @if ($errors)
       @foreach ($errors->all() as $error)
       <div class="alert alert-danger">

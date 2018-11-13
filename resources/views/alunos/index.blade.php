@@ -3,6 +3,12 @@
 @section('title', 'Alunos')
 
 @section('content')
+@if (Session::has('success'))
+  <div class="alert alert-success alert-dismissible" role="alert">
+    {{Session::get('success')}}
+  </div>
+@endif
+<h1>Alunos</h1>
 <table class="table">
     <thead>
       <tr>
@@ -14,11 +20,11 @@
     <tbody>
       @forelse ($alunos as $aluno)
         <tr>
-          <td>{{$aluno->nome}}k</td>
+          <td>{{$aluno->nome}}</td>
           <td>{{$aluno->ra}}</td>
           <td>
               <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary">Editar</button>
+                <a href="{{route('edit', ['aluno' => $aluno])}}" class="btn btn-primary">Editar</a>
                 <form action="{{route('delete', ['aluno' => $aluno])}}" method="POST">
                   @method('DELETE')
                   @csrf
